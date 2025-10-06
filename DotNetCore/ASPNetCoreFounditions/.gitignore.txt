@@ -1,0 +1,25 @@
+# Visual Studio user-specific files
+.vs/
+*.user
+*.suo
+
+# Build output
+bin/
+obj/
+out/
+Debug/
+Release/
+
+# Cache and logs
+*.log
+*.cache
+
+# Temporary files
+*.tmp
+*.bak
+
+# JetBrains Rider
+.idea/
+
+# Others
+*.db
