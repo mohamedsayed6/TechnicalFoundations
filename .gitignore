@@ -23,4 +23,7 @@ Release/
 
 # Others
 *.db
-/DotNetCore/ASPNetCoreFounditions/obj/Debug/net9.0/ASPNetCoreFounditions.AssemblyInfo.cs
+/DotNetCore/ASPNetCoreFounditions/.vs/ASPNetCoreFounditions/v17/.suo
+/DotNetCore/ASPNetCoreFounditions/.vs/ASPNetCoreFounditions/v17/DocumentLayout.backup.json
+/DotNetCore/ASPNetCoreFounditions/.vs/ASPNetCoreFounditions/v17/DocumentLayout.json
+/DotNetCore/ASPNetCoreFounditions/obj/Debug/net9.0/ASPNetCoreFounditions.AssemblyInfoInputs.cache
