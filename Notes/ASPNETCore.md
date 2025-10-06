@@ -1,0 +1,1 @@
+this notes for ASPNETCore
