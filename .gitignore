@@ -1,5 +1,26 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
+﻿# Visual Studio user-specific files
+.vs/
+*.user
+*.suo
 
-/DotNetCore/ASPNetCoreFounditions/.vs/ASPNetCoreFounditions/config/applicationhost.config
+# Build output
+bin/
+obj/
+out/
+Debug/
+Release/
+
+# Cache and logs
+*.log
+*.cache
+
+# Temporary files
+*.tmp
+*.bak
+
+# JetBrains Rider
+.idea/
+
+# Others
+*.db
+/DotNetCore/ASPNetCoreFounditions/obj/Debug/net9.0/ASPNetCoreFounditions.AssemblyInfo.cs
