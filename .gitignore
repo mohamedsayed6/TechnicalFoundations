@@ -27,3 +27,6 @@ Release/
 /DotNetCore/ASPNetCoreFounditions/.vs/ASPNetCoreFounditions/v17/DocumentLayout.backup.json
 /DotNetCore/ASPNetCoreFounditions/.vs/ASPNetCoreFounditions/v17/DocumentLayout.json
 /DotNetCore/ASPNetCoreFounditions/obj/Debug/net9.0/ASPNetCoreFounditions.AssemblyInfoInputs.cache
+/DotNetCore/ASPNetCoreFounditions/Properties/launchSettings.json
+/DotNetCore/ASPNetCoreFounditions/ASPNetCoreFounditions.csproj.user
+/DotNetCore/ASPNetCoreFounditions/.vs/ASPNetCoreFounditions/FileContentIndex/9e542129-5912-4948-a06b-a71956c11c2f.vsidx
