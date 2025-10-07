@@ -1,1 +1,13 @@
 
+----------Relationship configuration by convention and Fluent API configuration----------
+| Aspect       | **By Convention**                                                                                                           | **Fluent API**                                                                                                      |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| **Meaning**  | EF Core automatically infers relationships, keys, and other configurations based on class structure and naming conventions. | Developer explicitly defines relationships, keys, and other settings using code (usually inside `OnModelCreating`). |
+| **Location** | Inferred from entity class and navigation property names.                                                                   | Configured in `DbContext` using `ModelBuilder` or entity configuration classes.                                     |
+
+*Priority
+EF Core applies configurations in this order of precedence:
+Fluent API → highest priority
+Data Annotations
+Convention → lowest priority
+So, if you define something using Fluent API, it overrides any convention-based inference or data annotation.
