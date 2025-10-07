@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Technical Foundations\\TechnicalFoundations\\DotNetCore\\ASPNetCoreFounditions\\ASPNetCoreFounditions.csproj": {}
+    "E:\\TechnicalFoundations\\DotNetCore\\ASPNetCoreFounditions\\ASPNetCoreFounditions.csproj": {}
   },
   "projects": {
-    "D:\\Technical Foundations\\TechnicalFoundations\\DotNetCore\\ASPNetCoreFounditions\\ASPNetCoreFounditions.csproj": {
+    "E:\\TechnicalFoundations\\DotNetCore\\ASPNetCoreFounditions\\ASPNetCoreFounditions.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Technical Foundations\\TechnicalFoundations\\DotNetCore\\ASPNetCoreFounditions\\ASPNetCoreFounditions.csproj",
+        "projectUniqueName": "E:\\TechnicalFoundations\\DotNetCore\\ASPNetCoreFounditions\\ASPNetCoreFounditions.csproj",
         "projectName": "ASPNetCoreFounditions",
-        "projectPath": "D:\\Technical Foundations\\TechnicalFoundations\\DotNetCore\\ASPNetCoreFounditions\\ASPNetCoreFounditions.csproj",
-        "packagesPath": "C:\\Users\\Mohamed SayedAhmed\\.nuget\\packages\\",
-        "outputPath": "D:\\Technical Foundations\\TechnicalFoundations\\DotNetCore\\ASPNetCoreFounditions\\obj\\",
+        "projectPath": "E:\\TechnicalFoundations\\DotNetCore\\ASPNetCoreFounditions\\ASPNetCoreFounditions.csproj",
+        "packagesPath": "C:\\Users\\mohamed.hassani\\.nuget\\packages\\",
+        "outputPath": "E:\\TechnicalFoundations\\DotNetCore\\ASPNetCoreFounditions\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Mohamed SayedAhmed\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\mohamed.hassani\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -53,6 +54,10 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[9.0.9, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[9.0.6, )"
             }
           },
           "imports": [
@@ -74,7 +79,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
