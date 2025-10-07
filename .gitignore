@@ -30,3 +30,6 @@ Release/
 /DotNetCore/ASPNetCoreFounditions/Properties/launchSettings.json
 /DotNetCore/ASPNetCoreFounditions/ASPNetCoreFounditions.csproj.user
 /DotNetCore/ASPNetCoreFounditions/.vs/ASPNetCoreFounditions/FileContentIndex/9e542129-5912-4948-a06b-a71956c11c2f.vsidx
+/DotNetCore/ASPNetCoreFounditions/obj/Debug/net9.0/ASPNetCoreFounditions.assets.cache
+/DotNetCore/ASPNetCoreFounditions/.vs
+/DotNetCore/ASPNetCoreFounditions/.vs/ASPNetCoreFounditions/DesignTimeBuild/.dtbcache.v2
