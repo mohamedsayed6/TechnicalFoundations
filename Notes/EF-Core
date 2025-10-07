@@ -11,3 +11,23 @@ Fluent API → highest priority
 Data Annotations
 Convention → lowest priority
 So, if you define something using Fluent API, it overrides any convention-based inference or data annotation.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------Deferred Execution(IQuerable)----------------------------
+
+Deferred Execution in Entity Framework Core (EF Core) means that a LINQ query is not executed against the database immediately when it is defined,
+but only when the query’s results are actually needed — for example, when you iterate over the results or call a method that forces execution.
+
+Deferred execution provides:
+Performance optimization – EF doesn’t fetch data until needed.
+Composability – You can build queries step by step before execution.
+Reduced overhead – Avoids unnecessary database calls.
+
+| Feature               | **Eager Loading**               | **Lazy Loading**                                | **Explicit Loading**                           |
+| --------------------- | ------------------------------- | ----------------------------------------------- | ---------------------------------------------- |
+| **When data loads**   | Immediately with main query     | When navigation property is accessed            | When `.Load()` is explicitly called            |
+| **How to use**        | `.Include()` / `.ThenInclude()` | `UseLazyLoadingProxies()` + `virtual` nav props | `context.Entry(entity).Collection(...).Load()` |
+| **Number of queries** | Usually 1                       | Many (depends on access pattern)                | Many (you control how many)                    |
+| **Performance**       | Best for bulk queries           | Risk of N+1 queries                             | Controlled, predictable                        |
+| **Control**           | Low                             | Automatic                                       | Full manual control                            |
+| **Use case**          | Reports, dashboards             | Simple CRUD views, rarely used relations        | When you need partial data on demand           |
+| **Setup required**    | None                            | Requires proxy setup                            | None (available by default)                    |
