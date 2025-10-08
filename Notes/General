@@ -1,0 +1,26 @@
+----------------Prevent Circular Reference Errors in Json-----------------------------------------
+
+In this configuration, the ASP.NET Core application is set up to use **Newtonsoft.Json** instead of the default `System.Text.Json` serializer. 
+This is done by adding the following line in the `Program.cs` file:
+
+\\\csharp
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+    });
+----
+
+This setup serves two main purposes:
+
+1. **Enable Newtonsoft.Json Integration:**
+   By calling `.AddNewtonsoftJson()`, the application switches its JSON handling engine from `System.Text.Json` to `Newtonsoft.Json`.
+This is useful when you need advanced serialization features like custom converters, flexible property naming, or compatibility with older code that uses Newtonsoft attributes such as `[JsonProperty]`, `[JsonIgnore]`, or `[JsonConverter]`.
+
+2. **Prevent Circular Reference Errors:**
+   The line `options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;` solves one of the most common issues in APIs — circular reference loops.
+   For example, when working with Entity Framework models that have bidirectional relationships (like `Parent → Child → Parent`), JSON serialization can enter an infinite loop and cause runtime errors.
+   By setting `ReferenceLoopHandling` to `Ignore`, Newtonsoft.Json simply skips over repeated references, ensuring smooth and safe serialization without breaking your API responses.
+
+In short, this configuration improves API stability and flexibility by using a robust JSON serializer and eliminating circular reference serialization issues often encountered in complex object graphs.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
