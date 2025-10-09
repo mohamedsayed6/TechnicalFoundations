@@ -24,3 +24,66 @@ This is useful when you need advanced serialization features like custom convert
 
 In short, this configuration improves API stability and flexibility by using a robust JSON serializer and eliminating circular reference serialization issues often encountered in complex object graphs.
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+--------------------------------Data Validation and ModelState----------------------------------------------
+In **ASP.NET Core**, model validation is not automatically enforced unless you enable it through the `[ApiController]` attribute. Here’s how it works:
+
+---
+
+### 🧩 How Model Validation Works
+When an HTTP request reaches your controller:
+
+1. ASP.NET Core automatically performs **model binding** and **data annotation validation** (e.g., `[Required]`, `[Range]`, `[MaxLength]`).
+2. The results of that validation are stored in the `ModelState` object.
+3. It’s your responsibility to decide whether to proceed or stop execution based on `ModelState.IsValid`.
+
+Example:
+```csharp
+[HttpPost]
+public IActionResult CreateUser(UserDto model)
+{
+    if (!ModelState.IsValid)
+        return BadRequest(ModelState);
+
+    _dbContext.Users.Add(_mapper.Map<User>(model));
+    _dbContext.SaveChanges();
+    return Ok();
+}
+```
+If you skip this check, invalid data can reach your database and cause runtime or integrity issues.
+---
+### ⚙️ Automatic Validation with `[ApiController]`
+When you decorate your controller with the `[ApiController]` attribute, ASP.NET Core automatically validates incoming models for you.
+
+```csharp
+[ApiController]
+[Route("api/[controller]")]
+public class UsersController : ControllerBase
+{
+    [HttpPost]
+    public IActionResult Create(UserDto model)
+    {
+        // No need to check ModelState manually
+        // Invalid models automatically return 400 Bad Request
+        return Ok();
+    }
+}
+```
+In this mode:
+* The framework automatically returns a **400 Bad Request** if the model is invalid.
+* The response includes a `ProblemDetails` object describing validation errors.
+* You don’t need to write `if (!ModelState.IsValid)`.
+
+---
+### ✅ Summary
+
+| Controller Type           | Automatic Model Validation     | Manual Check Required                      |
+| ------------------------- | ------------------------------ | ------------------------------------------ |
+| With `[ApiController]`    | ✅ Yes (automatic 400 response) | ❌ Not required                             |
+| Without `[ApiController]` | ❌ No                           | ✅ Must check `ModelState.IsValid` manually |
+
+---
+**In short:**
+* ASP.NET Core *always* performs validation,
+* But *only* `[ApiController]` automatically stops execution when validation fails.
+* Otherwise, you must manually check `ModelState.IsValid` before proceeding.
