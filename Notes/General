@@ -87,3 +87,118 @@ In this mode:
 * ASP.NET Core *always* performs validation,
 * But *only* `[ApiController]` automatically stops execution when validation fails.
 * Otherwise, you must manually check `ModelState.IsValid` before proceeding.
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------Sending Objects in Query String vs Request Body in ASP.NET Core---------------------------------------------------
+
+### 🧩 Sending Objects in Query String vs Request Body in ASP.NET Core
+ASP.NET Core allows you to send data to your API through either the **query string** or the **request body**. Both approaches have their use cases, advantages, and limitations — understanding these helps you design more efficient and secure endpoints.
+--
+
+### 🔹 1. Sending Objects in Query String
+When using the query string, ASP.NET Core’s **model binder** automatically maps URL parameters to object properties.
+#### Example URL
+```
+GET /api/users?Name=Ali&Age=30&IsActive=true
+```
+
+#### Model
+```csharp
+public class UserFilterDto
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public bool IsActive { get; set; }
+}
+```
+
+#### Controller
+```csharp
+[HttpGet]
+public IActionResult GetUsers([FromQuery] UserFilterDto filter)
+{
+    return Ok(filter);
+}
+```
+
+ASP.NET Core:
+* Parses the query string into key/value pairs.
+* Matches keys with object property names (case-insensitive).
+* Converts string values to the correct data types.
+* Supports nested properties (e.g. `Customer.Name=Ali`).
+---
+
+### ✅ Pros of Using `[FromQuery]`
+* **Simple and convenient** for small sets of filter parameters.
+* **Automatic binding** — no manual parsing required.
+* **Ideal for GET requests**, where data retrieval is the goal.
+* **Easily testable** via browser or tools like Postman (parameters visible in URL).
+* **Fast binding** since the payload is small.
+
+### ⚠️ Cons of `[FromQuery]`
+* **Limited size** — most browsers and servers restrict URLs to about **2,000 characters**.
+* **No JSON structure support** — only key-value pairs.
+* **Less secure** — values appear in logs, history, and browser address bars.
+* **Hard to manage** for complex or nested data.
+* **GET requests only** — using it for data modification breaks REST conventions.
+---
+
+### 🔹 2. Sending Objects in Request Body
+When using the request body, you send the object as **JSON** (or another supported format), and ASP.NET Core deserializes it into your model.
+
+#### Example
+```csharp
+[HttpPost]
+public IActionResult SearchUsers([FromBody] UserFilterDto filter)
+{
+    return Ok(filter);
+}
+```
+
+#### Example JSON Request
+```json
+{
+  "name": "Ali",
+  "age": 30,
+  "isActive": true
+}
+```
+
+### ✅ Pros of Using `[FromBody]`
+* **Supports full JSON payloads** — ideal for complex, nested, or structured data.
+* **No length limitation** — handles large payloads easily.
+* **More secure** — data isn’t visible in the URL or browser logs.
+* **Easier to maintain** as objects grow in complexity.
+* **Consistent structure** — matches client-side JSON models directly.
+
+### ⚠️ Cons of `[FromBody]`
+* **Cannot be used with GET requests** (HTTP spec prohibits bodies in GET).
+* **Slightly higher overhead** due to serialization/deserialization.
+* **Not directly visible** in the browser address bar (less convenient for quick manual testing).
+* **One `[FromBody]` parameter allowed per action** — others must come from route or query.
+---
+
+### ⚖️ 3. Comparison Summary
+| Feature / Aspect                | `[FromQuery]`                    | `[FromBody]`                               |
+| ------------------------------- | -------------------------------- | ------------------------------------------ |
+| **Typical HTTP verbs**          | GET, DELETE                      | POST, PUT, PATCH                           |
+| **Data format**                 | Key-value pairs                  | JSON (or XML, etc.)                        |
+| **Complex/nested data**         | ❌ Limited                        | ✅ Fully supported                          |
+| **URL visibility**              | 🔓 Visible in URL                | 🔒 Hidden in body                          |
+| **Security for sensitive data** | ⚠️ Risky                         | ✅ Safer                                    |
+| **Size limit**                  | ~2KB (depends on server/browser) | Practically unlimited                      |
+| **Performance**                 | ⚡ Faster for small payloads      | 🧠 Better for structured or large payloads |
+| **Ease of testing**             | ✅ Quick via browser              | ⚠️ Requires tool like Postman              |
+| **REST convention alignment**   | ✅ Ideal for GET/read             | ✅ Ideal for create/search/update           |
+---
+
+### 🧠 Best Practice
+* Use **`[FromQuery]`** for **simple filters, search parameters, pagination, and sorting** in GET requests.
+* Use **`[FromBody]`** for **complex filtering, large data objects, or sensitive inputs** with POST/PUT methods.
+* Avoid mixing large JSON in query strings — it’s unreadable, error-prone, and may exceed URL limits.
+
+---
+**In short:**
+ASP.NET Core automatically binds data from both query strings and request bodies, but their purposes differ.
+Use **query strings for light, readable filters**, and **request bodies for complex or sensitive payloads** — this keeps your API efficient, secure, and well-structured.
+
