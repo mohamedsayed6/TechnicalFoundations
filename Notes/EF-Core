@@ -1,0 +1,110 @@
+
+----------Relationship configuration by convention and Fluent API configuration----------
+| Aspect       | **By Convention**                                                                                                           | **Fluent API**                                                                                                      |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| **Meaning**  | EF Core automatically infers relationships, keys, and other configurations based on class structure and naming conventions. | Developer explicitly defines relationships, keys, and other settings using code (usually inside `OnModelCreating`). |
+| **Location** | Inferred from entity class and navigation property names.                                                                   | Configured in `DbContext` using `ModelBuilder` or entity configuration classes.                                     |
+
+*Priority
+EF Core applies configurations in this order of precedence:
+Fluent API → highest priority
+Data Annotations
+Convention → lowest priority
+So, if you define something using Fluent API, it overrides any convention-based inference or data annotation.
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------Deferred Execution(IQuerable)----------------------------
+
+Deferred Execution in Entity Framework Core (EF Core) means that a LINQ query is not executed against the database immediately when it is defined,
+but only when the query’s results are actually needed — for example, when you iterate over the results or call a method that forces execution.
+
+Deferred execution provides:
+Performance optimization – EF doesn’t fetch data until needed.
+Composability – You can build queries step by step before execution.
+Reduced overhead – Avoids unnecessary database calls.
+
+| Feature               | **Eager Loading**               | **Lazy Loading**                                | **Explicit Loading**                           |
+| --------------------- | ------------------------------- | ----------------------------------------------- | ---------------------------------------------- |
+| **When data loads**   | Immediately with main query     | When navigation property is accessed            | When `.Load()` is explicitly called            |
+| **How to use**        | `.Include()` / `.ThenInclude()` | `UseLazyLoadingProxies()` + `virtual` nav props | `context.Entry(entity).Collection(...).Load()` |
+| **Number of queries** | Usually 1                       | Many (depends on access pattern)                | Many (you control how many)                    |
+| **Performance**       | Best for bulk queries           | Risk of N+1 queries                             | Controlled, predictable                        |
+| **Control**           | Low                             | Automatic                                       | Full manual control                            |
+| **Use case**          | Reports, dashboards             | Simple CRUD views, rarely used relations        | When you need partial data on demand           |
+| **Setup required**    | None                            | Requires proxy setup                            | None (available by default)                    |
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------Using IQueryable and Expression in EF Core------------------------------------------
+
+
+In **Entity Framework Core**, `IQueryable` and `Expression<Func<T, bool>>` are powerful tools that allow you to build **dynamic, efficient, and database-translatable queries**.
+
+### 🔹 1. `IQueryable` — Building Flexible and Deferred Queries
+`IQueryable` represents a **query that has not yet been executed**.
+When you chain methods like `Where`, `Select`, or `OrderBy`, EF Core builds an **expression tree** — not a SQL command yet.
+
+Example:
+```csharp
+var query = _dbContext.Users.AsQueryable();
+
+if (!string.IsNullOrEmpty(role))
+    query = query.Where(u => u.Role == role);
+
+if (isActive)
+    query = query.Where(u => u.IsActive);
+
+var users = await query.ToListAsync();
+```
+
+✅ Benefits:
+* Combines all conditions into **one optimized SQL query**.
+* Executes only when `ToList()`, `FirstOrDefault()`, or another terminal operation is called.
+* Ideal for **dynamic filters** and **conditional logic**.
+---
+
+### 🔹 2. `Expression<Func<T, bool>>` — Database-Translatable Predicates
+
+`Expression<Func<T, bool>>` defines a filter **as an expression tree**, which EF Core can translate into SQL.
+
+Example:
+```csharp
+Expression<Func<User, bool>> predicate = u => u.IsActive && u.Role == "Admin";
+var users = _dbContext.Users.Where(predicate).ToList();
+```
+
+✅ Benefits:
+* EF Core reads the expression and generates a SQL `WHERE` clause.
+* Filtering happens **in the database**, not in memory.
+* Excellent for **reusable** or **composable** filters.
+---
+
+### ⚠️ Important Distinction
+If you use a **`Func<T, bool>`** instead of an expression:
+```csharp
+Func<User, bool> predicate = u => u.IsActive;
+```
+
+EF Core **cannot translate it** to SQL — it will first load all data, then filter in memory.
+This is slower and should be avoided for large datasets.
+---
+
+### ✅ Best Practices
+* Use **`IQueryable`** when building queries step by step or conditionally.
+* Use **`Expression<Func<T, bool>>`** for filters that need to be translated into SQL.
+* Avoid **`Func<T, bool>`** when working with EF Core — it forces in-memory filtering.
+* Execute queries only at the end with methods like `ToListAsync()` or `FirstOrDefaultAsync()`.
+---
+
+### 💡 Summary
+
+| Concept                     | Executes in               | Translatable to SQL | Ideal Use Case                 |
+| --------------------------- | ------------------------- | ------------------- | ------------------------------ |
+| `IQueryable`                | Deferred (until executed) | ✅ Yes               | Building dynamic queries       |
+| `Expression<Func<T, bool>>` | Deferred                  | ✅ Yes               | Reusable or composable filters |
+| `Func<T, bool>`             | Immediate (in memory)     | ❌ No                | In-memory collections only     |
+
+---
+
+**In short:**
+Use `IQueryable` to **build** your query,
+and `Expression<Func<T, bool>>` to **define** filters that EF Core can translate efficiently into SQL.
