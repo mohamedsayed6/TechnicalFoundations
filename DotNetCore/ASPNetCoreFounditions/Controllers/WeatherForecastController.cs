@@ -1,3 +1,4 @@
+using ASPNetCoreFounditions.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASPNetCoreFounditions.Controllers
@@ -29,5 +30,12 @@ namespace ASPNetCoreFounditions.Controllers
             })
             .ToArray();
         }
+
+        [HttpPost]
+         public async Task<IActionResult> GetSearch(WatherDto watherDto)
+        {
+            return Ok();
+        }
+       
     }
 }
