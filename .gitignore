@@ -39,3 +39,7 @@ Release/
 /DotNetCore/ASPNetCoreFounditions/.vs/ProjectEvaluation/aspnetcorefounditions.metadata.v9.bin
 /DotNetCore/ASPNetCoreFounditions/.vs/ProjectEvaluation/aspnetcorefounditions.projects.v9.bin
 /DotNetCore/ASPNetCoreFounditions/.vs/ProjectEvaluation/aspnetcorefounditions.strings.v9.bin
+/DotNetCore/ASPNetCoreFounditions/obj/project.nuget.cache
+/DotNetCore/ASPNetCoreFounditions/obj/project.assets.json
+/DotNetCore/ASPNetCoreFounditions/obj/ASPNetCoreFounditions.csproj.nuget.g.props
+/DotNetCore/ASPNetCoreFounditions/obj/ASPNetCoreFounditions.csproj.nuget.dgspec.json
